@@ -24,9 +24,10 @@ RUN mkdir -p /home/container/steamcmd && \
     chmod +x steamcmd.sh
 
 # WICHTIG: falsche libs entfernen
-RUN rm -f /home/container/steamcmd/linux32/libcurl.so* || true && \
-    rm -f /home/container/steamcmd/linux32/libstdc++.so.6 || true
+RUN rm -f /home/container/steamcmd/linux32/libcurl.so* && \
+    rm -f /home/container/steamcmd/linux32/libstdc++.so* && \
+    rm -f /home/container/steamcmd/linux32/libgcc_s.so*
 
 WORKDIR /home/container
-
+ENV LD_LIBRARY_PATH=/usr/lib/i386-linux-gnu:/lib/i386-linux-gnu
 CMD ["/bin/bash"]
