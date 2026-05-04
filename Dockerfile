@@ -17,14 +17,15 @@ RUN dpkg --add-architecture i386 && \
         lib32stdc++6 && \
     rm -rf /var/lib/apt/lists/*
 
+# SteamCMD installieren (fix und sauber)
 RUN mkdir -p /home/container/steamcmd && \
     cd /home/container/steamcmd && \
-    wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
-    tar -xzf steamcmd_linux.tar.gz && \
+    curl -sqL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar zxvf - && \
     chmod +x steamcmd.sh
 
-RUN rm -f /home/container/steamcmd/linux32/libcurl.so* && \
-    rm -f /home/container/steamcmd/linux32/libstdc++.so.6
+# WICHTIG: falsche libs entfernen
+RUN rm -f /home/container/steamcmd/linux32/libcurl.so* || true && \
+    rm -f /home/container/steamcmd/linux32/libstdc++.so.6 || true
 
 WORKDIR /home/container
 
